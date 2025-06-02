@@ -1,39 +1,144 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+<footer class="footer">
+  <div class="footer__content">
+    <div class="footer__section">
+      <h3 class="footer__heading">{{ 'general.footer.collections' | t }}</h3>
+      <ul class="footer__menu">
+        {% for link in linklists['main-menu'].links %}
+          <li>
+            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="footer__section">
+      <h3 class="footer__heading">{{ 'general.footer.legal' | t }}</h3>
+      <ul class="footer__menu">
+        {% for link in linklists['footer'].links %}
+          <li>
+            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
+  <div class="footer__bottom">
+    <div class="footer__copyright">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}
+    </div>
+     {% if section.settings.show_payment_icons %}
       {% for type in shop.enabled_payment_types %}
         {{ type | payment_type_svg_tag }}
-      {% endfor %}
+      {% endfor %}     
     {% endif %}
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
+  .footer {
+    background-color: var(--color-background);
+    border-top: 4px solid var(--color-accent);
+    padding: 4rem 2rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .footer__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+
+  .footer__section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer__heading {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-accent);
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+
+  .footer__heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .footer__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer__link {
+    text-decoration: none;
+    color: var(--color-foreground-subdued);
+    transition: color 0.2s ease;
+  }
+
+  .footer__link:hover {
+    color: var(--color-accent);
+  }
+
+  .footer__bottom {
+    max-width: var(--page-width);
+    margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-accent);
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
-  }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  footer .footer__links,
-  footer .footer__payment {
-    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
+  }
+
+  .footer__copyright {
+    color: var(--color-foreground-subdued);
+  }
+
+  .footer__copyright a {
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer__copyright a:hover {
+    color: var(--color-accent);
+  }
+
+  @media screen and (max-width: 749px) {
+    .footer {
+      padding: 3rem 1.5rem 1.5rem;
+    }
+
+    .footer__content {
+      gap: 2rem;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer__heading::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 {% endstylesheet %}
 
@@ -41,11 +146,6 @@
 {
   "name": "t:general.footer",
   "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
-    },
     {
       "type": "checkbox",
       "id": "show_payment_icons",

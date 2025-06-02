@@ -19,7 +19,7 @@
         "id": "type_primary_font",
         "default": "work_sans_n4",
         "label": "t:general.primary"
-      },
+      }
     ]
   },
   {
@@ -77,6 +77,22 @@
         "unit": "px",
         "label": "t:labels.input_corner_radius",
         "default": 4
+      }
+    ]
+  },
+  {
+    "name": "t:general.customer_accounts",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:general.customer_accounts"
+      },
+      {
+        "type": "checkbox",
+        "id": "customer_accounts_enabled",
+        "label": "t:labels.enable_customer_accounts",
+        "default": true,
+        "info": "t:info.customer_accounts"
       }
     ]
   }

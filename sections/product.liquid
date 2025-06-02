@@ -66,6 +66,7 @@
       <div class="product__form">
         {% form 'product', product %}
           {% assign current_variant = product.selected_or_first_available_variant %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
 
           {% if product.has_only_default_variant == false %}
             {% for option in product.options_with_values %}
