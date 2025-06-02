@@ -17,7 +17,29 @@
     "text": "Text"
   },
   "labels": {
-    "show_payment_icons": "Zahlungssymbole anzeigen"
+    "show_payment_icons": "Zahlungssymbole anzeigen",
+    "grid_item_width": "Elementbreite",
+    "grid_gap": "Abstand zwischen Elementen",
+    "heading": "Überschrift",
+    "padding_top": "Abstand oben",
+    "padding_bottom": "Abstand unten",
+    "collection": "Kollektion",
+    "products_to_show": "Anzahl Produkte",
+    "products_per_row": "Produkte pro Zeile",
+    "products_per_row_mobile": "Produkte pro Zeile (Mobil)",
+    "show_vendor": "Hersteller anzeigen",
+    "show_price": "Preis anzeigen",
+    "show_view_all": "Alle anzeigen Button"
+  },
+  "collections": {
+    "view_all": "Alle anzeigen",
+    "no_products": "Keine Produkte in dieser Kollektion gefunden."
+  },
+  "options": {
+    "size": {
+      "small": "Klein",
+      "large": "Groß"
+    }
   },
   "sections": {
     "header": {

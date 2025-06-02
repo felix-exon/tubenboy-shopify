@@ -1,0 +1,322 @@
+{% comment %}
+  This section is used to display a single collection with customizable options.
+  It can be used on any page to showcase a specific collection.
+{% endcomment %}
+
+<div class="single-collection" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  {% if section.settings.heading != blank %}
+    <div class="single-collection__header">
+      <h2 class="single-collection__title">{{ section.settings.heading }}</h2>
+    </div>
+  {% endif %}
+
+  {%- assign collection = collections[section.settings.collection] -%}
+  {% if collection != blank %}
+    <div class="single-collection__grid" style="--grid-gap: {{ section.settings.grid_gap }}px; --products-per-row: {{ section.settings.products_per_row }}; --products-per-row-mobile: {{ section.settings.products_per_row_mobile }};">
+      {% for product in collection.products limit: section.settings.products_to_show %}
+        <div class="single-collection__product">
+          <a href="{{ product.url }}" class="single-collection__product-link">
+            <div class="single-collection__product-image-wrapper">
+              {% if product.featured_image %}
+                {{ product.featured_image | image_url: width: 600 | image_tag:
+                  loading: 'lazy',
+                  class: 'single-collection__product-image'
+                }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'single-collection__product-image placeholder' }}
+              {% endif %}
+            </div>
+            <div class="single-collection__product-info">
+              {% if section.settings.show_vendor and product.vendor %}
+                <div class="single-collection__product-vendor">{{ product.vendor }}</div>
+              {% endif %}
+              <h3 class="single-collection__product-title">{{ product.title }}</h3>
+              {% if section.settings.show_price %}
+                <div class="single-collection__product-price">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="single-collection__product-price--sale">{{ product.price | money }}</span>
+                    <span class="single-collection__product-price--compare">{{ product.compare_at_price | money }}</span>
+                  {% else %}
+                    {{ product.price | money }}
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_view_all and collection.products.size > section.settings.products_to_show %}
+      <div class="single-collection__footer">
+        <a href="{{ collection.url }}" class="single-collection__view-all">
+          {{ 'collections.view_all' | t }}
+        </a>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="single-collection__empty">
+      <p>{{ 'collections.no_products' | t }}</p>
+    </div>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .single-collection {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+
+  .single-collection__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .single-collection__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-foreground);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+  }
+
+  .single-collection__title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .single-collection__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--products-per-row), 1fr);
+    gap: var(--grid-gap);
+    padding: 0 var(--page-margin);
+  }
+
+  .single-collection__product {
+    position: relative;
+  }
+
+  .single-collection__product-link {
+    text-decoration: none;
+    color: var(--color-foreground);
+    display: block;
+  }
+
+  .single-collection__product-image-wrapper {
+    position: relative;
+    padding-bottom: 100%;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .single-collection__product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .single-collection__product-link:hover .single-collection__product-image {
+    transform: scale(1.05);
+  }
+
+  .single-collection__product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .single-collection__product-vendor {
+    font-size: 0.875rem;
+    color: var(--color-foreground-subdued);
+  }
+
+  .single-collection__product-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--color-foreground);
+  }
+
+  .single-collection__product-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .single-collection__product-price--sale {
+    color: var(--color-accent);
+  }
+
+  .single-collection__product-price--compare {
+    text-decoration: line-through;
+    color: var(--color-foreground-subdued);
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .single-collection__footer {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .single-collection__view-all {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+
+  .single-collection__view-all:hover {
+    opacity: 0.9;
+  }
+
+  .single-collection__empty {
+    text-align: center;
+    padding: 2rem;
+    color: var(--color-foreground-subdued);
+  }
+
+  @media screen and (max-width: 749px) {
+    .single-collection__header {
+      margin-bottom: 2rem;
+    }
+
+    .single-collection__title {
+      font-size: 1.5rem;
+    }
+
+    .single-collection__grid {
+      grid-template-columns: repeat(var(--products-per-row-mobile), 1fr);
+    }
+
+    .single-collection__product-title {
+      font-size: 0.875rem;
+    }
+
+    .single-collection__product-price {
+      font-size: 0.875rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:labels.collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:labels.products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "t:labels.products_per_row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_mobile",
+      "label": "t:labels.products_per_row_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "t:labels.grid_gap",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:labels.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:labels.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "t:labels.show_vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "t:labels.show_price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "t:labels.show_view_all",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:general.collection",
+      "settings": {
+        "heading": "Featured Collection",
+        "products_to_show": 4,
+        "products_per_row": 4,
+        "products_per_row_mobile": 2
+      }
+    }
+  ]
+}
+{% endschema %} 
