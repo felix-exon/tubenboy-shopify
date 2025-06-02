@@ -1,0 +1,38 @@
+{
+  "general": {
+    "404": "404",
+    "article": "Artikel",
+    "blog": "Blog",
+    "cart": "Warenkorb",
+    "collection": "Kollektion",
+    "collections_grid": "Kollektionen Grid",
+    "custom_section": "Benutzerdefiniert",
+    "footer": "Fußzeile",
+    "group": "Gruppe",
+    "header": "Header",
+    "page": "Seite",
+    "password": "Passwort",
+    "product": "Produkt",
+    "search": "Suche",
+    "text": "Text"
+  },
+  "labels": {
+    "show_payment_icons": "Zahlungssymbole anzeigen"
+  },
+  "sections": {
+    "header": {
+      "name": "Header",
+      "settings": {
+        "logo": {
+          "label": "Logo"
+        },
+        "logo_width": {
+          "label": "Logobreite"
+        },
+        "menu": {
+          "label": "Menü"
+        }
+      }
+    }
+  }
+} 

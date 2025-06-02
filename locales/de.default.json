@@ -1,0 +1,161 @@
+{
+  "404": {
+    "title": "404",
+    "not_found": "Seite nicht gefunden.",
+    "back_to_shopping": "Zurück zum Shoppen"
+  },
+  "blog": {
+    "article_comments": "Kommentare",
+    "article_metadata_html": "{{ date }} von {{ author }}",
+    "comment_form_body": "Kommentar",
+    "comment_form_email": "E-Mail",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Absenden",
+    "comment_form_title": "Kommentar hinzufügen"
+  },
+  "cart": {
+    "title": "Warenkorb",
+    "subtotal": "Zwischensumme",
+    "discount": "Rabatt",
+    "total": "Gesamtsumme",
+    "empty": "Ihr Warenkorb ist leer",
+    "continue_shopping": "Weiter einkaufen",
+    "update": "Aktualisieren",
+    "checkout": "Zur Kasse",
+    "remove": "Entfernen"
+  },
+  "customers": {
+    "login": {
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "title": "Anmeldung",
+      "forgot_password": "Passwort vergessen?",
+      "new_customer": "Neukunde?",
+      "create_account": "Konto erstellen"
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Registrieren",
+      "existing_customer": "Bereits Kunde?",
+      "login": "Anmelden"
+    },
+    "recover": {
+      "title": "Passwort zurücksetzen",
+      "email": "E-Mail",
+      "submit": "Link senden",
+      "success": "Wir haben Ihnen eine E-Mail mit einem Link zum Zurücksetzen Ihres Passworts gesendet.",
+      "back_to_login": "Zurück zur Anmeldung"
+    },
+    "reset_password": {
+      "title": "Passwort zurücksetzen",
+      "password": "Neues Passwort",
+      "password_confirmation": "Passwort bestätigen",
+      "submit": "Passwort aktualisieren"
+    },
+    "account": {
+      "title": "Mein Konto",
+      "logout": "Abmelden",
+      "orders": "Bestellungen",
+      "order_number": "Bestellung {{ number }}",
+      "total": "Gesamtbetrag",
+      "status": "Status",
+      "view_order": "Bestellung ansehen",
+      "no_orders": "Sie haben noch keine Bestellungen.",
+      "details": "Kontodetails",
+      "default_address": "Standardadresse",
+      "view_addresses": "Adressen verwalten"
+    },
+    "addresses": {
+      "title": "Adressen",
+      "add_new": "Neue Adresse hinzufügen",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "delete_confirm": "Möchten Sie diese Adresse wirklich löschen?",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "company": "Firma",
+      "address1": "Adresse",
+      "address2": "Adresszusatz",
+      "city": "Stadt",
+      "country": "Land",
+      "province": "Bundesland",
+      "zip": "PLZ",
+      "phone": "Telefon",
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    }
+  },
+  "collections": {
+    "title": "Kollektionen"
+  },
+  "general": {
+    "footer": {
+      "collections": "Kollektionen",
+      "legal": "Rechtliches"
+    },
+    "customer_accounts": "Kundenkonten",
+    "fonts": "Schriftarten",
+    "primary": "Primär",
+    "typography": "Typografie",
+    "layout": "Layout",
+    "colors": "Farben",
+    "menu": "Menü"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
+    "card": "Geschenkkarte",
+    "expired": "Diese Geschenkkarte ist abgelaufen",
+    "expires_on": "Läuft ab am {{ expires_on }}",
+    "use_at_checkout": "Diese Geschenkkarte an der Kasse verwenden"
+  },
+  "labels": {
+    "page_width": "Seitenbreite",
+    "page_margin": "Seitenrand",
+    "background": "Hintergrund",
+    "foreground": "Vordergrund",
+    "input_corner_radius": "Eckenradius der Eingabefelder",
+    "enable_customer_accounts": "Kundenkonten aktivieren"
+  },
+  "options": {
+    "page_width": {
+      "narrow": "Schmal",
+      "wide": "Breit"
+    }
+  },
+  "info": {
+    "customer_accounts": "Ermöglicht es Kunden, sich zu registrieren und ihre Bestellungen zu verwalten."
+  },
+  "password": {
+    "title": "Dieser Shop ist privat",
+    "password": "Passwort",
+    "enter": "Eingeben"
+  },
+  "search": {
+    "title": "Suche",
+    "placeholder": "Artikel, Seiten oder Produkte suchen",
+    "submit": "Suchen",
+    "no_results_html": "Keine Ergebnisse für {{ terms }} gefunden",
+    "results_for_html": "{{ count }} Ergebnisse für {{ terms }} gefunden"
+  },
+  "sections": {
+    "header": {
+      "name": "Header",
+      "settings": {
+        "logo": {
+          "label": "Logo"
+        },
+        "logo_width": {
+          "label": "Logobreite"
+        },
+        "menu": {
+          "label": "Menü"
+        }
+      }
+    }
+  }
+} 
