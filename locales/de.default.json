@@ -22,7 +22,9 @@
     "continue_shopping": "Weiter einkaufen",
     "update": "Aktualisieren",
     "checkout": "Zur Kasse",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "quantity": "Menge",
+    "price": "Preis"
   },
   "customers": {
     "login": {
@@ -91,13 +93,26 @@
     }
   },
   "collections": {
-    "title": "Kollektionen"
+    "title": "Kollektionen",
+    "view_all": "Alle anzeigen",
+    "no_products": "Keine Produkte in dieser Kollektion gefunden."
   },
   "general": {
-    "footer": {
-      "collections": "Kollektionen",
-      "legal": "Rechtliches"
-    },
+    "404": "404",
+    "article": "Artikel",
+    "blog": "Blog",
+    "cart": "Warenkorb",
+    "collection": "Kollektion",
+    "collections_grid": "Kollektionen Grid",
+    "custom_section": "Benutzerdefiniert",
+    "footer": "Fußzeile",
+    "group": "Gruppe",
+    "header": "Header",
+    "page": "Seite",
+    "password": "Passwort",
+    "product": "Produkt",
+    "search": "Suche",
+    "text": "Text",
     "customer_accounts": "Kundenkonten",
     "fonts": "Schriftarten",
     "primary": "Primär",
@@ -121,12 +136,28 @@
     "input_corner_radius": "Eckenradius der Eingabefelder",
     "enable_customer_accounts": "Kundenkonten aktivieren",
     "grid_item_width": "Elementbreite",
-    "grid_gap": "Abstand zwischen Elementen"
+    "grid_gap": "Abstand zwischen Elementen",
+    "show_payment_icons": "Zahlungssymbole anzeigen",
+    "heading": "Überschrift",
+    "padding_top": "Abstand oben",
+    "padding_bottom": "Abstand unten",
+    "collection": "Kollektion",
+    "products_to_show": "Anzahl Produkte",
+    "products_per_row": "Produkte pro Zeile",
+    "products_per_row_mobile": "Produkte pro Zeile (Mobil)",
+    "show_vendor": "Hersteller anzeigen",
+    "show_price": "Preis anzeigen",
+    "show_view_all": "Alle anzeigen Button",
+    "accent_color": "Akzentfarbe"
   },
   "options": {
     "page_width": {
       "narrow": "Schmal",
       "wide": "Breit"
+    },
+    "size": {
+      "small": "Klein",
+      "large": "Groß"
     }
   },
   "info": {

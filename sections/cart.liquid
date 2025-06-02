@@ -5,9 +5,11 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
 {% endcomment %}
 
-<div class="cart">
+<div class="cart" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
   <div class="cart__container">
-    <h1 class="cart__title">{{ 'cart.title' | t }}</h1>
+    <div class="cart__header">
+      <h1 class="cart__title">{{ 'cart.title' | t }}</h1>
+    </div>
 
     {% if cart.item_count > 0 %}
       <form action="{{ routes.cart_url }}" method="post" class="cart__form">
@@ -129,7 +131,28 @@
 {% schema %}
 {
   "name": "t:general.cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:labels.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:labels.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ]
 }
 {% endschema %}
 
@@ -137,19 +160,40 @@
   .cart {
     max-width: var(--page-width);
     margin: 0 auto;
-    padding: 2rem var(--page-margin);
+    padding: 0 var(--page-margin);
+  }
+
+  .cart__header {
+    text-align: center;
+    margin-bottom: 3rem;
   }
 
   .cart__title {
     font-size: 2rem;
-    margin: 0 0 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-foreground);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+  }
+
+  .cart__title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
   }
 
   .cart__items {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
   .cart__item {
@@ -158,6 +202,10 @@
     gap: 1.5rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .cart__item:last-child {
+    border-bottom: none;
   }
 
   .cart__item-image {
@@ -191,6 +239,7 @@
   .cart__item-title a {
     color: var(--color-foreground);
     text-decoration: none;
+    transition: color 0.2s ease;
   }
 
   .cart__item-title a:hover {
@@ -200,6 +249,7 @@
   .cart__item-variant {
     color: var(--color-foreground-subdued);
     margin: 0 0 0.5rem;
+    font-size: 0.875rem;
   }
 
   .cart__item-price {
@@ -211,6 +261,7 @@
     color: var(--color-foreground-subdued);
     text-decoration: line-through;
     margin-left: 0.5rem;
+    font-size: 0.875rem;
   }
 
   .cart__item-quantity {
@@ -248,15 +299,14 @@
     width: 3rem;
     height: 2.5rem;
     border: none;
-    border-left: 1px solid var(--color-border);
-    border-right: 1px solid var(--color-border);
     text-align: center;
     font-size: 1rem;
-    -moz-appearance: textfield;
+    color: var(--color-foreground);
+    background: none;
   }
 
-  .cart__quantity-input::-webkit-outer-spin-button,
-  .cart__quantity-input::-webkit-inner-spin-button {
+  .cart__quantity-input::-webkit-inner-spin-button,
+  .cart__quantity-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -265,6 +315,7 @@
     color: var(--color-foreground-subdued);
     text-decoration: none;
     font-size: 0.875rem;
+    transition: color 0.2s ease;
   }
 
   .cart__item-remove:hover {
@@ -272,17 +323,15 @@
   }
 
   .cart__footer {
-    display: flex;
-    justify-content: flex-end;
+    background-color: var(--color-background-subdued);
+    border-radius: 0.5rem;
+    padding: 2rem;
   }
 
   .cart__summary {
-    width: 100%;
-    max-width: 400px;
-    padding: 2rem;
-    background-color: var(--color-background-subdued);
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-accent);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .cart__subtotal,
@@ -290,46 +339,43 @@
   .cart__total {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 0;
+    align-items: center;
   }
 
   .cart__total {
     font-weight: 600;
     font-size: 1.25rem;
-    border-top: 1px solid var(--color-border);
-    margin-top: 0.5rem;
     padding-top: 1rem;
-    color: var(--color-accent);
+    border-top: 1px solid var(--color-border);
   }
 
   .cart__buttons {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
     margin-top: 2rem;
   }
 
   .cart__update-button,
   .cart__checkout-button {
-    width: 100%;
-    padding: 1rem;
+    flex: 1;
+    padding: 0.75rem 1.5rem;
     border-radius: 0.25rem;
-    font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
+    text-align: center;
     cursor: pointer;
     transition: opacity 0.2s ease;
   }
 
   .cart__update-button {
-    background: none;
-    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
     color: var(--color-foreground);
+    border: 1px solid var(--color-border);
   }
 
   .cart__checkout-button {
     background-color: var(--color-accent);
-    border: none;
     color: var(--color-background);
+    border: none;
   }
 
   .cart__update-button:hover,
@@ -339,21 +385,38 @@
 
   .cart__empty {
     text-align: center;
-    padding: 4rem 0;
+    padding: 3rem 0;
+  }
+
+  .cart__empty p {
+    margin: 0 0 1.5rem;
+    color: var(--color-foreground-subdued);
   }
 
   .cart__continue-shopping {
     display: inline-block;
-    margin-top: 1rem;
-    color: var(--color-accent);
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-accent);
+    color: var(--color-background);
     text-decoration: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
   }
 
   .cart__continue-shopping:hover {
-    text-decoration: underline;
+    opacity: 0.9;
   }
 
   @media screen and (max-width: 749px) {
+    .cart__header {
+      margin-bottom: 2rem;
+    }
+
+    .cart__title {
+      font-size: 1.5rem;
+    }
+
     .cart__item {
       grid-template-columns: 100px 1fr;
       gap: 1rem;
@@ -373,8 +436,8 @@
       align-items: flex-start;
     }
 
-    .cart__summary {
-      padding: 1.5rem;
+    .cart__buttons {
+      flex-direction: column;
     }
   }
 {% endstyle %}

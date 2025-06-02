@@ -14,7 +14,13 @@
     "password": "Passwort",
     "product": "Produkt",
     "search": "Suche",
-    "text": "Text"
+    "text": "Text",
+    "fonts": "Schriftarten",
+    "primary": "Primär",
+    "layout": "Layout",
+    "customer_accounts": "Kundenkonten",
+    "colors": "Farben",
+    "typography": "Typografie"
   },
   "labels": {
     "show_payment_icons": "Zahlungssymbole anzeigen",
@@ -29,7 +35,17 @@
     "products_per_row_mobile": "Produkte pro Zeile (Mobil)",
     "show_vendor": "Hersteller anzeigen",
     "show_price": "Preis anzeigen",
-    "show_view_all": "Alle anzeigen Button"
+    "show_view_all": "Alle anzeigen Button",
+    "enable_customer_accounts": "Kundenkonten aktivieren",
+    "page_width": "Seitenbreite",
+    "page_margin": "Seitenrand",
+    "background": "Hintergrund",
+    "foreground": "Vordergrund",
+    "input_corner_radius": "Eckenradius Eingabefelder",
+    "accent_color": "Akzentfarbe"
+  },
+  "info": {
+    "customer_accounts": "Kunden können sich registrieren, um ihre Bestellungen zu verfolgen und ihre Daten zu verwalten."
   },
   "collections": {
     "view_all": "Alle anzeigen",
@@ -39,6 +55,10 @@
     "size": {
       "small": "Klein",
       "large": "Groß"
+    },
+    "page_width": {
+      "narrow": "Schmal",
+      "wide": "Breit"
     }
   },
   "sections": {
@@ -56,5 +76,18 @@
         }
       }
     }
+  },
+  "cart": {
+    "title": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer",
+    "continue_shopping": "Weiter einkaufen",
+    "subtotal": "Zwischensumme",
+    "taxes_and_shipping_at_checkout": "Steuern und Versand werden an der Kasse berechnet",
+    "checkout": "Zur Kasse",
+    "update": "Aktualisieren",
+    "quantity": "Menge",
+    "remove": "Entfernen",
+    "price": "Preis",
+    "total": "Gesamt"
   }
 } 

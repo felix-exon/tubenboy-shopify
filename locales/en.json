@@ -22,7 +22,9 @@
     "continue_shopping": "Continue shopping",
     "update": "Update",
     "checkout": "Checkout",
-    "remove": "Remove"
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "price": "Price"
   },
   "customers": {
     "login": {
@@ -91,13 +93,26 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "view_all": "View all",
+    "no_products": "No products found in this collection."
   },
   "general": {
-    "footer": {
-      "collections": "Collections",
-      "legal": "Legal"
-    },
+    "404": "404",
+    "article": "Article",
+    "blog": "Blog",
+    "cart": "Cart",
+    "collection": "Collection",
+    "collections_grid": "Collections Grid",
+    "custom_section": "Custom",
+    "footer": "Footer",
+    "group": "Group",
+    "header": "Header",
+    "page": "Page",
+    "password": "Password",
+    "product": "Product",
+    "search": "Search",
+    "text": "Text",
     "customer_accounts": "Customer accounts",
     "fonts": "Fonts",
     "primary": "Primary",
@@ -121,16 +136,32 @@
     "input_corner_radius": "Input corner radius",
     "enable_customer_accounts": "Enable customer accounts",
     "grid_item_width": "Item width",
-    "grid_gap": "Gap between items"
+    "grid_gap": "Gap between items",
+    "show_payment_icons": "Show payment icons",
+    "heading": "Heading",
+    "padding_top": "Padding top",
+    "padding_bottom": "Padding bottom",
+    "collection": "Collection",
+    "products_to_show": "Number of products",
+    "products_per_row": "Products per row",
+    "products_per_row_mobile": "Products per row (mobile)",
+    "show_vendor": "Show vendor",
+    "show_price": "Show price",
+    "show_view_all": "Show view all button",
+    "accent_color": "Accent color"
   },
   "options": {
     "page_width": {
       "narrow": "Narrow",
       "wide": "Wide"
+    },
+    "size": {
+      "small": "Small",
+      "large": "Large"
     }
   },
   "info": {
-    "customer_accounts": "Allow customers to register and manage their orders."
+    "customer_accounts": "Customers can register to track their orders and manage their information."
   },
   "password": {
     "title": "This shop is private",

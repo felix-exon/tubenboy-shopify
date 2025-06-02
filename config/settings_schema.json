@@ -69,6 +69,12 @@
         "label": "t:labels.foreground"
       },
       {
+        "type": "color",
+        "id": "accent_color",
+        "default": "#FF6B6B",
+        "label": "t:labels.accent_color"
+      },
+      {
         "type": "range",
         "id": "input_corner_radius",
         "min": 0,
