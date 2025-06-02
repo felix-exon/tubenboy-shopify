@@ -119,7 +119,9 @@
     "background": "Background",
     "foreground": "Foreground",
     "input_corner_radius": "Input corner radius",
-    "enable_customer_accounts": "Enable customer accounts"
+    "enable_customer_accounts": "Enable customer accounts",
+    "grid_item_width": "Item width",
+    "grid_gap": "Gap between items"
   },
   "options": {
     "page_width": {
@@ -157,5 +159,12 @@
         }
       }
     }
+  },
+  "products": {
+    "quantity": "Quantity",
+    "add_to_cart": "Add to cart",
+    "product_description": "Product Description",
+    "decrease_quantity": "Decrease quantity",
+    "increase_quantity": "Increase quantity"
   }
 }

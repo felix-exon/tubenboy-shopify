@@ -12,7 +12,7 @@
         "background_image": "shopify://shop_images/hero-bg.jpg",
         "mobile_background_image": "shopify://shop_images/hero-bg-mobile.jpg",
         "overlay_color": "#000000",
-        "overlay_opacity": 0.4,
+        "overlay_opacity": 40,
         "content_position": "center",
         "heading": "Welcome to Our Store",
         "heading_size": 48,

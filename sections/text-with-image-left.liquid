@@ -1,0 +1,314 @@
+{% schema %}
+{
+  "name": "Text with Image Left",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text Content",
+      "default": "<p>Add your text content here.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "page",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#e53e3e"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_margin_top",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Button Top Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "button_margin_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Button Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text with Image Left",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="text-with-image-section" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="text-with-image-container {% if section.settings.full_width %}full-width{% endif %}">
+    {% if section.settings.heading != blank %}
+      <h2 class="text-with-image-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    
+    <div class="text-with-image-grid">
+      <div class="text-with-image-image">
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            class: 'w-full h-full object-cover'
+          }}
+        {% endif %}
+      </div>
+      
+      <div class="text-with-image-content">
+        <div class="text-with-image-text">
+          {{ section.settings.text }}
+        </div>
+        
+        {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+          {% assign button_page = pages[section.settings.button_link] %}
+          <a href="{{ button_page.url }}" 
+             class="text-with-image-button" 
+             style="border-radius: {{ section.settings.button_border_radius }}px; 
+                    margin-top: {{ section.settings.button_margin_top }}px; 
+                    margin-bottom: {{ section.settings.button_margin_bottom }}px;">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.text-with-image-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: var(--color-background, #fff);
+}
+
+.text-with-image-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.text-with-image-container.full-width {
+  max-width: 100%;
+}
+
+.text-with-image-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--color-text, #111);
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.text-with-image-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--color-accent, {{ section.settings.button_bg_color }});
+}
+
+.text-with-image-grid {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 3rem;
+  align-items: center;
+  position: relative;
+}
+
+.text-with-image-grid::before {
+  display: none;
+}
+
+.text-with-image-image {
+  width: 100%;
+  position: relative;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.text-with-image-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent, {{ section.settings.button_bg_color }});
+  opacity: 0.1;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.text-with-image-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.text-with-image-content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.text-with-image-text {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--color-text, #222);
+  position: relative;
+}
+
+.text-with-image-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  background: var(--color-accent, {{ section.settings.button_bg_color }});
+  color: var(--color-on-accent, {{ section.settings.button_text_color }});
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-left: 0;
+  margin-right: 1rem;
+  align-self: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+.text-with-image-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.text-with-image-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.text-with-image-button:hover::before {
+  transform: translateX(100%);
+}
+
+@media screen and (max-width: 767px) {
+  .text-with-image-container {
+    padding: 1.5rem;
+  }
+  
+  .text-with-image-heading {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .text-with-image-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .text-with-image-text {
+    font-size: 1rem;
+  }
+  
+  .text-with-image-button {
+    align-self: center;
+    margin-left: 1rem;
+  }
+}
+</style> 

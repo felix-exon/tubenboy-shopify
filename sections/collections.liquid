@@ -5,51 +5,161 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-<h1>{{ 'collections.title' | t }}</h1>
+<div class="collections-section" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  {% if section.settings.heading != blank %}
+    <div class="collections-section__header">
+      <h1 class="collections-section__title">{{ section.settings.heading }}</h1>
+    </div>
+  {% endif %}
 
-<div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
-        %}
-      {% endif %}
-
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
-
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
+  <div
+    class="collections {{ section.settings.grid_item_width }}"
+    style="--grid-gap: {{ section.settings.grid_gap }}px"
+  >
+    {% for collection in collections %}
+      <a class="collection-card" href="{{ collection.url }}">
+        {% if collection.featured_image %}
+          {% render 'image',
+            class: 'collection-card__image',
+            image: collection.featured_image,
+            width: 600,
+            height: 600,
+            crop: 'center'
+          %}
         {% endif %}
-      </div>
-    </a>
-  {% endfor %}
+
+        <div class="collection-card__content">
+          <p>{{ collection.title }}</p>
+
+          {% if collection.description %}
+            <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
+          {% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
 </div>
 
 {% stylesheet %}
+  .collections-section {
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+
+  .collections-section__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .collections-section__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-foreground);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+  }
+
+  .collections-section__title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
+  }
+
   .collections {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
     gap: var(--grid-gap);
+    padding: 0 var(--page-margin);
   }
+
   .collections--compact {
     --collection-card-size: 160px;
   }
+
   .collections--full {
     --collection-card-size: 280px;
   }
+
   .collection-card {
     display: flex;
     flex-direction: column;
     width: 100%;
+    text-decoration: none;
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .collection-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .collection-card__image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .collection-card__content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .collection-card__content p:first-child {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-foreground);
+  }
+
+  .collection-card__content p:last-child {
+    font-size: 0.875rem;
+    color: var(--color-foreground-subdued);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 749px) {
+    .collections-section__header {
+      margin-bottom: 2rem;
+    }
+
+    .collections-section__title {
+      font-size: 1.5rem;
+    }
+
+    .collections {
+      padding: 0 var(--page-margin);
+    }
+
+    .collections--compact {
+      --collection-card-size: 140px;
+    }
+
+    .collections--full {
+      --collection-card-size: 240px;
+    }
+
+    .collection-card__content {
+      padding: 1rem;
+    }
+
+    .collection-card__content p:first-child {
+      font-size: 1.125rem;
+    }
   }
 {% endstylesheet %}
 
@@ -57,6 +167,32 @@
 {
   "name": "t:general.collections_grid",
   "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "Collections"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:labels.padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:labels.padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
     {
       "type": "select",
       "id": "grid_item_width",

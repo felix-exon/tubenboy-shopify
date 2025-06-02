@@ -119,7 +119,9 @@
     "background": "Hintergrund",
     "foreground": "Vordergrund",
     "input_corner_radius": "Eckenradius der Eingabefelder",
-    "enable_customer_accounts": "Kundenkonten aktivieren"
+    "enable_customer_accounts": "Kundenkonten aktivieren",
+    "grid_item_width": "Elementbreite",
+    "grid_gap": "Abstand zwischen Elementen"
   },
   "options": {
     "page_width": {
@@ -157,5 +159,12 @@
         }
       }
     }
+  },
+  "products": {
+    "quantity": "Menge",
+    "add_to_cart": "In den Warenkorb",
+    "product_description": "Produktbeschreibung",
+    "decrease_quantity": "Menge verringern",
+    "increase_quantity": "Menge erhöhen"
   }
 } 

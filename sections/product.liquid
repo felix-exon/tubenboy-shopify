@@ -124,13 +124,13 @@
           {% endif %}
 
           <div class="product__quantity">
-            <label for="quantity" class="product__quantity-label">Quantity</label>
+            <label for="quantity" class="product__quantity-label">{{ 'products.quantity' | t }}</label>
             <div class="product__quantity-wrapper">
               <button
                 type="button"
                 class="product__quantity-button"
                 data-action="decrease"
-                aria-label="Decrease quantity"
+                aria-label="{{ 'products.decrease_quantity' | t }}"
               >
                 <svg width="12" height="2" viewBox="0 0 12 2" fill="none">
                   <path d="M1 1H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -143,13 +143,13 @@
                 min="1"
                 value="1"
                 class="product__quantity-input"
-                aria-label="Quantity"
+                aria-label="{{ 'products.quantity' | t }}"
               >
               <button
                 type="button"
                 class="product__quantity-button"
                 data-action="increase"
-                aria-label="Increase quantity"
+                aria-label="{{ 'products.increase_quantity' | t }}"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path d="M6 1V11M1 6H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -160,7 +160,7 @@
 
           <div class="product__buttons">
             <button type="submit" class="product__add-to-cart">
-              Add to cart
+              {{ 'products.add_to_cart' | t }}
             </button>
             {{ form | payment_button }}
           </div>
@@ -170,7 +170,7 @@
   </div>
 
   <div class="product__description">
-    <h2>Product Description</h2>
+    <h2>{{ 'products.product_description' | t }}</h2>
     <div class="product__description-content">
       {{ product.description }}
     </div>

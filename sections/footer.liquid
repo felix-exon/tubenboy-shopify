@@ -1,26 +1,43 @@
 <footer class="footer">
   <div class="footer__content">
-    <div class="footer__section">
-      <h3 class="footer__heading">{{ 'general.footer.collections' | t }}</h3>
-      <ul class="footer__menu">
-        {% for link in linklists['main-menu'].links %}
-          <li>
-            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+    {% if section.settings.collections_menu != blank %}
+      <div class="footer__section">
+        <h3 class="footer__heading">{{ linklists[section.settings.collections_menu].title }}</h3>
+        <ul class="footer__menu">
+          {% for link in linklists[section.settings.collections_menu].links %}
+            <li>
+              <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
 
-    <div class="footer__section">
-      <h3 class="footer__heading">{{ 'general.footer.legal' | t }}</h3>
-      <ul class="footer__menu">
-        {% for link in linklists['footer'].links %}
-          <li>
-            <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+    {% if section.settings.middle_menu != blank %}
+      <div class="footer__section">
+        <h3 class="footer__heading">{{ linklists[section.settings.middle_menu].title }}</h3>
+        <ul class="footer__menu">
+          {% for link in linklists[section.settings.middle_menu].links %}
+            <li>
+              <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if section.settings.legal_menu != blank %}
+      <div class="footer__section">
+        <h3 class="footer__heading">{{ linklists[section.settings.legal_menu].title }}</h3>
+        <ul class="footer__menu">
+          {% for link in linklists[section.settings.legal_menu].links %}
+            <li>
+              <a href="{{ link.url }}" class="footer__link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
   </div>
 
   <div class="footer__bottom">
@@ -146,6 +163,29 @@
 {
   "name": "t:general.footer",
   "settings": [
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
+      "type": "link_list",
+      "id": "collections_menu",
+      "label": "Collections Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "middle_menu",
+      "label": "Middle Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal Menu"
+    },
+    {
+      "type": "header",
+      "content": "Payment Settings"
+    },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
