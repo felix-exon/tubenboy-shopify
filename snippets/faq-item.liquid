@@ -1,0 +1,106 @@
+{% comment %}
+  FAQ Item Component
+  Accepts:
+  - question: The question text
+  - answer: The answer text (richtext)
+  - is_open: Whether the item should be open by default (optional)
+{% endcomment %}
+
+<div class="faq-item {% if is_open %}is-open{% endif %}" x-data="{ open: {% if is_open %}true{% else %}false{% endif %} }">
+  <button 
+    class="faq-item__question" 
+    @click="open = !open"
+    :aria-expanded="open"
+  >
+    <span class="faq-item__question-text">{{ question }}</span>
+    <span class="faq-item__icon" :class="{ 'is-open': open }">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </button>
+  
+  <div 
+    class="faq-item__answer" 
+    x-show="open"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 transform -translate-y-2"
+    x-transition:enter-end="opacity-100 transform translate-y-0"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 transform translate-y-0"
+    x-transition:leave-end="opacity-0 transform -translate-y-2"
+  >
+    <div class="faq-item__answer-content">
+      {{ answer }}
+    </div>
+  </div>
+</div>
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid var(--color-border, #e5e5e5);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-item__question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-text, #000000);
+  }
+
+  .faq-item__question:hover {
+    color: var(--color-accent, #000000);
+  }
+
+  .faq-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item__icon.is-open {
+    transform: rotate(45deg);
+  }
+
+  .faq-item__answer {
+    padding-bottom: 1.5rem;
+  }
+
+  .faq-item__answer-content {
+    color: var(--color-text-light, #666666);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .faq-item__answer-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 767px) {
+    .faq-item__question {
+      font-size: 1rem;
+      padding: 1rem 0;
+    }
+
+    .faq-item__answer {
+      padding-bottom: 1rem;
+    }
+
+    .faq-item__answer-content {
+      font-size: 0.875rem;
+    }
+  }
+</style> 
