@@ -1,0 +1,404 @@
+{% comment %}
+  This is the addresses management page
+{% endcomment %}
+
+<div class="addresses">
+  <div class="addresses__container">
+    <h1 class="addresses__title">{{ 'customers.addresses.title' | t }}</h1>
+
+    <div class="addresses__actions">
+      <button type="button" class="addresses__new-button" data-address-new>
+        {{ 'customers.addresses.add_new' | t }}
+      </button>
+    </div>
+
+    <div class="addresses__list">
+      {% for address in customer.addresses %}
+        <div class="addresses__item" data-address-id="{{ address.id }}">
+          <div class="addresses__item-content">
+            {{ address | format_address }}
+          </div>
+
+          <div class="addresses__item-actions">
+            <button type="button" class="addresses__edit-button" data-address-edit="{{ address.id }}">
+              {{ 'customers.addresses.edit' | t }}
+            </button>
+            <button type="button" class="addresses__delete-button" data-address-delete="{{ address.id }}">
+              {{ 'customers.addresses.delete' | t }}
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="addresses__form" data-address-form style="display: none;">
+      {% form 'customer_address', customer.new_address %}
+        <div class="addresses__form-fields">
+          <div class="addresses__field">
+            <label for="address_first_name">{{ 'customers.addresses.first_name' | t }}</label>
+            <input
+              type="text"
+              name="address[first_name]"
+              id="address_first_name"
+              value="{{ form.first_name }}"
+              autocomplete="given-name"
+              required
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_last_name">{{ 'customers.addresses.last_name' | t }}</label>
+            <input
+              type="text"
+              name="address[last_name]"
+              id="address_last_name"
+              value="{{ form.last_name }}"
+              autocomplete="family-name"
+              required
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_company">{{ 'customers.addresses.company' | t }}</label>
+            <input
+              type="text"
+              name="address[company]"
+              id="address_company"
+              value="{{ form.company }}"
+              autocomplete="organization"
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_address1">{{ 'customers.addresses.address1' | t }}</label>
+            <input
+              type="text"
+              name="address[address1]"
+              id="address_address1"
+              value="{{ form.address1 }}"
+              autocomplete="address-line1"
+              required
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_address2">{{ 'customers.addresses.address2' | t }}</label>
+            <input
+              type="text"
+              name="address[address2]"
+              id="address_address2"
+              value="{{ form.address2 }}"
+              autocomplete="address-line2"
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_city">{{ 'customers.addresses.city' | t }}</label>
+            <input
+              type="text"
+              name="address[city]"
+              id="address_city"
+              value="{{ form.city }}"
+              autocomplete="address-level2"
+              required
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_country">{{ 'customers.addresses.country' | t }}</label>
+            <select
+              name="address[country]"
+              id="address_country"
+              data-country-selector
+              data-default="{{ form.country }}"
+              autocomplete="country"
+              required
+            >
+              {{ all_country_option_tags }}
+            </select>
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_province">{{ 'customers.addresses.province' | t }}</label>
+            <select
+              name="address[province]"
+              id="address_province"
+              data-province-selector
+              data-default="{{ form.province }}"
+              autocomplete="address-level1"
+            >
+            </select>
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_zip">{{ 'customers.addresses.zip' | t }}</label>
+            <input
+              type="text"
+              name="address[zip]"
+              id="address_zip"
+              value="{{ form.zip }}"
+              autocomplete="postal-code"
+              required
+            >
+          </div>
+
+          <div class="addresses__field">
+            <label for="address_phone">{{ 'customers.addresses.phone' | t }}</label>
+            <input
+              type="tel"
+              name="address[phone]"
+              id="address_phone"
+              value="{{ form.phone }}"
+              autocomplete="tel"
+            >
+          </div>
+        </div>
+
+        <div class="addresses__form-actions">
+          <button type="submit" class="addresses__submit">
+            {{ 'customers.addresses.save' | t }}
+          </button>
+          <button type="button" class="addresses__cancel" data-address-cancel>
+            {{ 'customers.addresses.cancel' | t }}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% style %}
+  .addresses {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 4rem var(--page-margin);
+  }
+
+  .addresses__container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .addresses__title {
+    font-size: 2rem;
+    margin: 0 0 2rem;
+    color: var(--color-foreground);
+  }
+
+  .addresses__actions {
+    margin-bottom: 2rem;
+  }
+
+  .addresses__new-button {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--style-border-radius-inputs);
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+
+  .addresses__new-button:hover {
+    opacity: 0.9;
+  }
+
+  .addresses__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .addresses__item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: 1.5rem;
+  }
+
+  .addresses__item-content {
+    margin-bottom: 1.5rem;
+  }
+
+  .addresses__item-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .addresses__edit-button,
+  .addresses__delete-button {
+    background: none;
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: var(--style-border-radius-inputs);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .addresses__edit-button:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .addresses__delete-button:hover {
+    border-color: #d02e2e;
+    color: #d02e2e;
+  }
+
+  .addresses__form {
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: 2rem;
+  }
+
+  .addresses__form-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .addresses__field {
+    margin-bottom: 1rem;
+  }
+
+  .addresses__field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-foreground);
+  }
+
+  .addresses__field input,
+  .addresses__field select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .addresses__field input:focus,
+  .addresses__field select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .addresses__form-actions {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .addresses__submit {
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--style-border-radius-inputs);
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+
+  .addresses__submit:hover {
+    opacity: 0.9;
+  }
+
+  .addresses__cancel {
+    background: none;
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--style-border-radius-inputs);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .addresses__cancel:hover {
+    border-color: var(--color-foreground);
+    color: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .addresses {
+      padding: 3rem var(--page-margin);
+    }
+
+    .addresses__title {
+      font-size: 1.75rem;
+    }
+
+    .addresses__form-fields {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<script>
+  class AddressForm {
+    constructor() {
+      this.form = document.querySelector('[data-address-form]');
+      this.newButton = document.querySelector('[data-address-new]');
+      this.cancelButton = document.querySelector('[data-address-cancel]');
+      this.countrySelector = document.querySelector('[data-country-selector]');
+      this.provinceSelector = document.querySelector('[data-province-selector]');
+      this.editButtons = document.querySelectorAll('[data-address-edit]');
+      this.deleteButtons = document.querySelectorAll('[data-address-delete]');
+
+      this.init();
+    }
+
+    init() {
+      this.newButton.addEventListener('click', () => this.showForm());
+      this.cancelButton.addEventListener('click', () => this.hideForm());
+      this.countrySelector.addEventListener('change', () => this.updateProvinces());
+      this.editButtons.forEach(button => {
+        button.addEventListener('click', (e) => this.editAddress(e));
+      });
+      this.deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => this.deleteAddress(e));
+      });
+
+      this.updateProvinces();
+    }
+
+    showForm() {
+      this.form.style.display = 'block';
+      this.form.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    hideForm() {
+      this.form.style.display = 'none';
+    }
+
+    updateProvinces() {
+      const country = this.countrySelector.value;
+      const provinces = this.provinceSelector.dataset.provinces;
+      const provincesList = JSON.parse(provinces)[country] || [];
+
+      this.provinceSelector.innerHTML = '';
+      provincesList.forEach(province => {
+        const option = document.createElement('option');
+        option.value = province[0];
+        option.textContent = province[1];
+        this.provinceSelector.appendChild(option);
+      });
+    }
+
+    editAddress(event) {
+      const addressId = event.target.dataset.addressEdit;
+      const address = document.querySelector(`[data-address-id="${addressId}"]`);
+      // Populate form with address data
+      this.showForm();
+    }
+
+    deleteAddress(event) {
+      const addressId = event.target.dataset.addressDelete;
+      if (confirm('{{ 'customers.addresses.delete_confirm' | t }}')) {
+        // Delete address
+      }
+    }
+  }
+
+  new AddressForm();
+</script> 

@@ -1,0 +1,181 @@
+{% comment %}
+  This is the main account page that shows customer information and order history
+{% endcomment %}
+
+<div class="account">
+  <div class="account__header">
+    <h1 class="account__title">{{ 'customers.account.title' | t }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="account__logout">
+      {{ 'customers.account.logout' | t }}
+    </a>
+  </div>
+
+  <div class="account__content">
+    <div class="account__orders">
+      <h2>{{ 'customers.account.orders' | t }}</h2>
+      
+      {% if customer.orders.size > 0 %}
+        <div class="account__orders-list">
+          {% for order in customer.orders %}
+            <div class="account__order">
+              <div class="account__order-header">
+                <h3>{{ 'customers.account.order_number' | t: number: order.name }}</h3>
+                <span class="account__order-date">{{ order.created_at | date: format: 'date' }}</span>
+              </div>
+              
+              <div class="account__order-details">
+                <p>{{ 'customers.account.total' | t }}: {{ order.total_price | money }}</p>
+                <p>{{ 'customers.account.status' | t }}: {{ order.financial_status_label }}</p>
+              </div>
+
+              <a href="{{ order.customer_url }}" class="account__order-link">
+                {{ 'customers.account.view_order' | t }}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>{{ 'customers.account.no_orders' | t }}</p>
+      {% endif %}
+    </div>
+
+    <div class="account__details">
+      <h2>{{ 'customers.account.details' | t }}</h2>
+      
+      <div class="account__address">
+        <h3>{{ 'customers.account.default_address' | t }}</h3>
+        {{ customer.default_address | format_address }}
+      </div>
+
+      <a href="{{ routes.account_addresses_url }}" class="account__addresses-link">
+        {{ 'customers.account.view_addresses' | t }}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  .account {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 4rem var(--page-margin);
+  }
+
+  .account__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .account__title {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--color-foreground);
+  }
+
+  .account__logout {
+    color: var(--color-foreground-subdued);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .account__logout:hover {
+    color: var(--color-accent);
+  }
+
+  .account__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+  }
+
+  .account__orders h2,
+  .account__details h2 {
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem;
+    color: var(--color-foreground);
+  }
+
+  .account__orders-list {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .account__order {
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-inputs);
+    padding: 1.5rem;
+  }
+
+  .account__order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .account__order-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .account__order-date {
+    color: var(--color-foreground-subdued);
+  }
+
+  .account__order-details {
+    margin-bottom: 1rem;
+  }
+
+  .account__order-details p {
+    margin: 0.5rem 0;
+    color: var(--color-foreground-subdued);
+  }
+
+  .account__order-link {
+    display: inline-block;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .account__order-link:hover {
+    color: var(--color-foreground);
+  }
+
+  .account__address {
+    margin-bottom: 1.5rem;
+  }
+
+  .account__address h3 {
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+    color: var(--color-foreground);
+  }
+
+  .account__addresses-link {
+    display: inline-block;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .account__addresses-link:hover {
+    color: var(--color-foreground);
+  }
+
+  @media screen and (max-width: 749px) {
+    .account {
+      padding: 3rem var(--page-margin);
+    }
+
+    .account__content {
+      grid-template-columns: 1fr;
+    }
+
+    .account__title {
+      font-size: 1.75rem;
+    }
+  }
+{% endstyle %} 
