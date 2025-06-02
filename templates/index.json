@@ -1,20 +1,82 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "full_width": true,
+        "margin": "0,0",
+        "padding": 40,
+        "desktop_height": 600,
+        "tablet_height": 500,
+        "mobile_height": 400,
+        "background_image": "shopify://shop_images/hero-bg.jpg",
+        "mobile_background_image": "shopify://shop_images/hero-bg-mobile.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0.4,
+        "content_position": "center",
+        "heading": "Welcome to Our Store",
+        "heading_size": 48,
+        "heading_color": "#ffffff",
+        "subheading": "Discover Amazing Products",
+        "subheading_size": 24,
+        "subheading_color": "#ffffff",
+        "description": "<p>Shop our latest collection of premium products.</p>",
+        "description_size": 18,
+        "description_color": "#ffffff",
+        "button_text": "Shop Now",
+        "button_link": "/collections/all",
+        "button_bg_color": "#ffffff",
+        "button_text_color": "#000000",
+        "button_hover_bg_color": "#f3f4f6",
+        "button_hover_text_color": "#000000",
+        "heading_bottom_padding": 24,
+        "subheading_bottom_padding": 32,
+        "description_bottom_padding": 0,
+        "use_automatic_mobile_scaling": true
+      }
+    },
+    "product-showcase": {
+      "type": "product-showcase",
+      "settings": {
+        "full_width": false,
+        "margin": "0,0",
+        "padding": 40,
+        "product_1": "product-1",
+        "product_1_title": "Featured Product 1",
+        "product_1_description": "<p>Discover our first featured product.</p>",
+        "product_1_button_text": "Shop Now",
+        "product_1_button_bg": "#000000",
+        "product_1_button_text_color": "#ffffff",
+        "product_2": "product-2",
+        "product_2_title": "Featured Product 2",
+        "product_2_description": "<p>Explore our second featured product.</p>",
+        "product_2_button_text": "Shop Now",
+        "product_2_button_bg": "#000000",
+        "product_2_button_text_color": "#ffffff"
+      }
+    },
+    "collection-showcase": {
+      "type": "collection-showcase",
+      "settings": {
+        "full_width": false,
+        "margin": "0,0",
+        "padding": 40,
+        "collection": "all",
+        "title": "Featured Collection",
+        "description": "<p>Browse our curated selection of products.</p>",
+        "products_per_row": 4,
+        "products_per_row_mobile": 2,
+        "products_limit": 8,
+        "show_vendor": true,
+        "show_price": true,
+        "show_rating": true,
+        "image_ratio": "square"
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "product-showcase",
+    "collection-showcase"
   ]
 }
