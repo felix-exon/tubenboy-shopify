@@ -162,8 +162,21 @@
             <button type="submit" class="product__add-to-cart">
               {{ 'products.add_to_cart' | t }}
             </button>
-            {{ form | payment_button }}
+            {% if section.settings.show_payment_button %}
+              {{ form | payment_button }}
+            {% endif %}
           </div>
+          
+          {% if section.settings.show_shipping_info and section.settings.shipping_info_page != blank %}
+            <div class="product__shipping-info">
+              <a href="{{ pages[section.settings.shipping_info_page].url }}" class="product__shipping-link">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 3H13L12 10H3L1 3ZM1 3L0.5 1M4 13.5H4.01M11 13.5H11.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ section.settings.shipping_info_text | default: 'Versandinformationen' }}
+              </a>
+            </div>
+          {% endif %}
         {% endform %}
       </div>
     </div>
@@ -360,6 +373,30 @@
     opacity: 0.9;
   }
 
+  .product__shipping-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .product__shipping-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+  }
+
+  .product__shipping-link:hover {
+    color: var(--color-accent);
+  }
+
+  .product__shipping-link svg {
+    flex-shrink: 0;
+  }
+
   .product__description {
     border-top: 1px solid var(--color-border);
     padding-top: 2rem;
@@ -539,7 +576,41 @@
 {% schema %}
 {
   "name": "t:general.product",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Payment Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_button",
+      "label": "Show payment button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Shipping Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_info",
+      "label": "Show shipping information link",
+      "default": true
+    },
+    {
+      "type": "page",
+      "id": "shipping_info_page",
+      "label": "Shipping information page",
+      "info": "Select a page with your shipping information"
+    },
+    {
+      "type": "text",
+      "id": "shipping_info_text",
+      "label": "Link text",
+      "default": "Versandinformationen",
+      "info": "Text displayed for the shipping info link"
+    }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }

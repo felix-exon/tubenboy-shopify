@@ -195,10 +195,12 @@
 <div class="faq-section" style="margin-top: {{ top }}px; margin-bottom: {{ bottom }}px; padding: {{ section.settings.padding }}px;">
   <div class="faq-section__container {% if section.settings.full_width %}full-width{% endif %}">
     {% if section.settings.heading != blank %}
-      <h1 class="faq-section__heading {% if section.settings.text_alignment == 'center' %}text-center{% elsif section.settings.text_alignment == 'right' %}text-right{% else %}text-left{% endif %}" 
-          style="color: {{ section.settings.heading_color }}; font-size: {{ section.settings.heading_size }}px; padding-bottom: {{ section.settings.heading_padding_bottom }}px;">
-        {{ section.settings.heading }}
-      </h1>
+      <div class="faq-section__header">
+        <h1 class="faq-section__heading {% if section.settings.text_alignment == 'center' %}text-center{% elsif section.settings.text_alignment == 'right' %}text-right{% else %}text-left{% endif %}" 
+            style="color: {{ section.settings.heading_color }}; font-size: {{ section.settings.heading_size }}px; padding-bottom: {{ section.settings.heading_padding_bottom }}px;">
+          {{ section.settings.heading }}
+        </h1>
+      </div>
     {% endif %}
 
     {% if section.settings.subheading != blank %}
@@ -271,8 +273,26 @@
     max-width: none;
   }
 
+  .faq-section__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
   .faq-section__heading {
     margin: 0;
+    position: relative;
+    display: inline-block;
+  }
+
+  .faq-section__heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--color-accent);
   }
 
   .faq-section__subheading {
@@ -316,6 +336,14 @@
   @media screen and (max-width: 767px) {
     .faq-section__container {
       padding: 0 1rem;
+    }
+
+    .faq-section__header {
+      margin-bottom: 2rem;
+    }
+
+    .faq-section__heading {
+      font-size: 1.5rem;
     }
 
     .faq-section__categories {

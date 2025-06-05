@@ -95,7 +95,13 @@
   "collections": {
     "title": "Kollektionen",
     "view_all": "Alle anzeigen",
-    "no_products": "Keine Produkte in dieser Kollektion gefunden."
+    "no_products": "Keine Produkte in dieser Kollektion gefunden.",
+    "filters": {
+      "title": "Filter"
+    },
+    "sorting": {
+      "title": "Sortieren"
+    }
   },
   "general": {
     "404": "404",
@@ -119,7 +125,12 @@
     "typography": "Typografie",
     "layout": "Layout",
     "colors": "Farben",
-    "menu": "Menü"
+    "menu": "Menü",
+    "continue_shopping": "Weiter einkaufen",
+    "pagination": {
+      "previous": "Zurück",
+      "next": "Weiter"
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
@@ -196,6 +207,10 @@
     "add_to_cart": "In den Warenkorb",
     "product_description": "Produktbeschreibung",
     "decrease_quantity": "Menge verringern",
-    "increase_quantity": "Menge erhöhen"
+    "increase_quantity": "Menge erhöhen",
+    "product": {
+      "add_to_cart": "In den Warenkorb",
+      "sold_out": "Ausverkauft"
+    }
   }
 } 

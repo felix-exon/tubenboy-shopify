@@ -1,0 +1,546 @@
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Section Padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Contact Information"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "123 Main Street, City, Country"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "contact@example.com"
+    },
+    {
+      "type": "textarea",
+      "id": "hours",
+      "label": "Business Hours",
+      "default": "Monday - Friday: 9am - 5pm\nSaturday: 10am - 4pm\nSunday: Closed"
+    },
+    {
+      "type": "header",
+      "content": "Form Settings"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Send Message"
+    },
+    {
+      "type": "range",
+      "id": "button_margin_y",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Button Margin (Top/Bottom)",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border Color",
+      "default": "#E5E7EB"
+    },
+    {
+      "type": "header",
+      "content": "Map Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Show Map",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "map_embed_code",
+      "label": "Map Embed Code",
+      "info": "Add your Google Maps or other map embed code here"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form",
+      "category": "Contact"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="contact-form-section" style="padding: {{ section.settings.padding }}px 0;">
+  <div class="contact-form-container {% if section.settings.full_width %}full-width{% endif %}">
+    <div class="contact-form-grid">
+      <div class="contact-form-info">
+        <h1 class="contact-form-heading">{{ section.settings.heading }}</h1>
+        <div class="contact-form-subheading">{{ section.settings.subheading }}</div>
+        
+        <div class="contact-info-list">
+          {% if section.settings.address != blank %}
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 13.43C13.7231 13.43 15.12 12.0331 15.12 10.31C15.12 8.58687 13.7231 7.19 12 7.19C10.2769 7.19 8.88 8.58687 8.88 10.31C8.88 12.0331 10.2769 13.43 12 13.43Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3.62 8.49C5.59 -0.169998 18.42 -0.159998 20.38 8.5C21.53 13.58 18.37 17.88 15.6 20.54C13.59 22.48 10.41 22.48 8.39 20.54C5.63 17.88 2.47 13.57 3.62 8.49Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-info-content">
+                <h3>Address</h3>
+                <p>{{ section.settings.address }}</p>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.phone != blank %}
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 16.92V19.92C22.0011 20.1985 21.9441 20.4742 21.8325 20.7294C21.7209 20.9845 21.5573 21.2134 21.352 21.4006C21.1467 21.5879 20.9043 21.7293 20.6409 21.8157C20.3775 21.9021 20.0993 21.9315 19.82 21.902C16.7428 21.5856 13.787 20.5341 11.19 18.82C8.77383 17.2371 6.72549 15.0001 5.31 12.31C3.57986 9.68054 2.52022 6.67119 2.2 3.54C2.17045 3.26089 2.19981 2.98281 2.28608 2.71973C2.37235 2.45665 2.51351 2.21467 2.70052 2.0097C2.88753 1.80474 3.11611 1.64138 3.37088 1.52997C3.62565 1.41856 3.90093 1.36151 4.18 1.362H7.18C7.67774 1.36199 8.15481 1.56322 8.50694 1.91552C8.85907 2.26782 9.06027 2.74495 9.06 3.24267C9.10144 4.21135 9.35921 5.15942 9.81432 6.01134C10.2694 6.86325 10.9096 7.59733 11.69 8.16C12.3521 8.63419 12.9185 9.23832 13.3543 9.9355C13.79 10.6327 14.0864 11.4093 14.226 12.22C14.2953 12.7081 14.5736 13.1504 14.9975 13.4367C15.4215 13.723 15.9511 13.8269 16.466 13.722L19.39 13.072C19.8634 12.9826 20.3013 12.7572 20.6463 12.4257C20.9913 12.0942 21.2275 11.6723 21.326 11.212C21.42 10.7768 21.42 10.3232 21.326 9.888C21.232 9.4528 21.0463 9.0444 20.782 8.69L18.932 6.13C18.6304 5.72044 18.2462 5.3863 17.806 5.15219C17.3658 4.91808 16.8813 4.78984 16.388 4.77667C15.9083 4.76602 15.4319 4.84442 14.9885 5.00639C14.5451 5.16836 14.1447 5.41033 13.812 5.716L12.932 6.596C12.5347 6.46433 12.1231 6.37251 11.704 6.322C11.0772 6.23341 10.4755 6.01459 9.94201 5.67999C9.40853 5.34539 8.95735 4.90341 8.62001 4.386C8.42001 4.066 8.27001 3.716 8.18001 3.35C8.09001 2.984 8.06001 2.608 8.09001 2.234V2.222" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-info-content">
+                <h3>Phone</h3>
+                <p>{{ section.settings.phone }}</p>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.email != blank %}
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-info-content">
+                <h3>Email</h3>
+                <p>{{ section.settings.email }}</p>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.hours != blank %}
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="contact-info-content">
+                <h3>Hours</h3>
+                <p>{{ section.settings.hours | newline_to_br }}</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="contact-form-wrapper">
+        {% form 'contact', id: 'contact_form' %}
+          {% if form.posted_successfully? %}
+            <div class="form-success">
+              <p>Thank you for your message. We'll get back to you soon!</p>
+            </div>
+          {% endif %}
+
+          {% if form.errors %}
+            <div class="form-errors">
+              <p>Please correct the following errors:</p>
+              <ul>
+                {% for error in form.errors %}
+                  <li>{{ error }} {{ form.errors.messages[error] }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          <div class="form-group">
+            <label for="ContactFormName">Name</label>
+            <input type="text" id="ContactFormName" name="contact[name]" required>
+          </div>
+
+          <div class="form-group">
+            <label for="ContactFormEmail">Email</label>
+            <input type="email" id="ContactFormEmail" name="contact[email]" required>
+          </div>
+
+          <div class="form-group">
+            <label for="ContactFormPhone">Phone</label>
+            <input type="tel" id="ContactFormPhone" name="contact[phone]">
+          </div>
+
+          <div class="form-group">
+            <label for="ContactFormMessage">Message</label>
+            <textarea id="ContactFormMessage" name="contact[body]" rows="5" required></textarea>
+          </div>
+
+          <button type="submit" class="contact-form-submit">
+            {{ section.settings.submit_button_text }}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if section.settings.show_map and section.settings.map_embed_code != blank %}
+<div class="contact-page-map">
+  <div class="contact-page-map-container">
+    <div class="contact-page-map-wrapper">
+      {{ section.settings.map_embed_code }}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .contact-form-section {
+    width: 100%;
+    background-color: var(--color-background);
+  }
+
+  .contact-form-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--page-margin);
+  }
+
+  .contact-form-container.full-width {
+    max-width: none;
+  }
+
+  .contact-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-form-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--color-foreground);
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .contact-form-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--color-accent);
+  }
+
+  .contact-form-subheading {
+    font-size: 1.125rem;
+    color: var(--color-foreground-subdued);
+    margin-bottom: 3rem;
+    line-height: 1.6;
+  }
+
+  .contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .contact-info-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-info-content h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: var(--color-foreground);
+  }
+
+  .contact-info-content p {
+    margin: 0;
+    color: var(--color-foreground-subdued);
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  .contact-form-wrapper {
+    background-color: var(--color-background);
+    border-radius: 8px;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid {{ section.settings.input_border_color }};
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+    transition: all 0.2s ease;
+  }
+
+  .form-group input:hover,
+  .form-group textarea:hover {
+    border-color: var(--color-foreground-subdued);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+  }
+
+  .contact-form-submit {
+    margin: {{ section.settings.button_margin_y }}px 0;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+  }
+
+  .contact-form-submit:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .contact-form-submit:active {
+    transform: translateY(0);
+  }
+
+  @media screen and (max-width: 989px) {
+    .contact-form-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .contact-form-heading {
+      font-size: 2rem;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .contact-form-section {
+      padding: 3rem 0;
+    }
+
+    .contact-form-container {
+      padding: 0 1.5rem;
+    }
+
+    .contact-form-heading {
+      font-size: 1.75rem;
+    }
+
+    .contact-form-subheading {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-info-list {
+      gap: 1.5rem;
+    }
+
+    .contact-info-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .contact-info-content h3 {
+      font-size: 1rem;
+    }
+
+    .contact-form-wrapper {
+      padding: 1.5rem;
+    }
+  }
+
+  .contact-page-map {
+    width: 100%;
+    background-color: var(--color-background);
+    padding: 4rem 0;
+  }
+
+  .contact-page-map-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--page-margin);
+  }
+
+  .contact-page-map-wrapper {
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .contact-page-map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .contact-page-map-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background-subdued);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-page-map-placeholder-content {
+    text-align: center;
+    color: var(--color-foreground-subdued);
+  }
+
+  .contact-page-map-placeholder-content svg {
+    margin-bottom: 1rem;
+  }
+
+  .contact-page-map-placeholder-content p {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  @media screen and (max-width: 749px) {
+    .contact-page-map {
+      padding: 2rem 0;
+    }
+
+    .contact-page-map-wrapper {
+      height: 300px;
+    }
+  }
+
+  .form-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-errors {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-errors ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.5rem;
+  }
+
+  .form-errors li {
+    margin-bottom: 0.25rem;
+  }
+</style> 

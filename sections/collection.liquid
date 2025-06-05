@@ -6,34 +6,33 @@
 {% endcomment %}
 
 <div class="collection">
-  <h1 class="collection__title">{{ collection.title }}</h1>
-
-  <div class="collection-products">
-    {% paginate collection.products by 20 %}
-      {% for product in collection.products %}
-        <div class="collection-product">
-          {% if product.featured_image %}
-            {% render 'image',
-              class: 'collection-product__image',
-              image: product.featured_image,
-              url: product.url,
-              width: 400,
-              height: 400,
-              crop: 'center'
-            %}
-          {% endif %}
-          <div class="collection-product__content">
-            <h2 class="collection-product__title">{{ product.title | escape | link_to: product.url }}</h2>
-            <p class="collection-product__price">{{ product.price | money }}</p>
-          </div>
-        </div>
-      {% endfor %}
-
-      <div class="collection-pagination">
-        {{ paginate | default_pagination }}
-      </div>
-    {% endpaginate %}
+  <div class="collection__header">
+    <h1 class="collection__title">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <div class="collection__description rte">{{ collection.description }}</div>
+    {% endif %}
   </div>
+
+  {% if collection.products.size > 0 %}
+    <div class="collection__products">
+      {% paginate collection.products by section.settings.products_per_page %}
+        <div class="collection__grid">
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {% endpaginate %}
+    </div>
+  {% else %}
+    <div class="collection-empty-state">
+      <h2 class="collection-empty-state__heading">{{ section.settings.empty_state_heading }}</h2>
+      <p class="collection-empty-state__text">{{ section.settings.empty_state_text }}</p>
+      <a href="{{ routes.root_url }}" class="collection-empty-state__button button button--primary">
+        {{ 'general.continue_shopping' | t }}
+      </a>
+    </div>
+  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -178,11 +177,78 @@
       gap: 1rem;
     }
   }
+
+  .collection-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-background);
+    border-radius: 0.5rem;
+    border: 2px dashed var(--color-accent);
+    margin: 2rem 0;
+  }
+
+  .collection-empty-state__heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin: 0 0 1rem;
+  }
+
+  .collection-empty-state__text {
+    font-size: 1rem;
+    color: var(--color-foreground-subdued);
+    margin: 0 0 2rem;
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .collection-empty-state__button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-accent);
+    color: var(--color-background);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+  .collection-empty-state__button:hover {
+    background-color: var(--color-accent-hover);
+  }
+
+  @media screen and (min-width: 750px) {
+    .collection-empty-state {
+      padding: 6rem 3rem;
+    }
+
+    .collection-empty-state__heading {
+      font-size: 2rem;
+    }
+
+    .collection-empty-state__text {
+      font-size: 1.125rem;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:general.collection",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "empty_state_heading",
+      "label": "Empty state heading",
+      "default": "No products found"
+    },
+    {
+      "type": "text",
+      "id": "empty_state_text",
+      "label": "Empty state text",
+      "default": "This collection is currently empty. Please check back later for new products."
+    }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,279 @@
+{% comment %}
+  Main Collection Section
+  Displays the collection products in a grid layout with filtering and sorting
+{% endcomment %}
+
+<div class="collection">
+  <div class="page-width">
+    <div class="collection__header">
+      <h1 class="collection__title">{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="collection__description rte">
+          {{ collection.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.enable_sorting %}
+      <div class="collection__toolbar">
+        <div class="collection__sort">
+          <label for="SortBy" class="collection__sort-label">{{ 'collections.sorting.title' | t }}</label>
+          <select name="sort_by" id="SortBy" class="collection__sort-select">
+            {% for option in collection.sort_options %}
+              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected="selected"{% endif %}>
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    {% endif %}
+
+    <collection-sort class="collection__products">
+      {% paginate collection.products by section.settings.products_per_page %}
+        <div class="product-grid" style="--grid-columns: {{ section.settings.columns_desktop }};">
+          {% for product in collection.products %}
+            <div class="product-grid__item">
+              {% render 'product-card', 
+                product: product,
+                show_vendor: section.settings.show_vendor,
+                show_rating: section.settings.show_rating,
+                show_secondary_image: section.settings.show_secondary_image,
+                image_ratio: section.settings.image_ratio,
+                enable_quick_add: section.settings.enable_quick_add
+              %}
+            </div>
+          {% endfor %}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {% endpaginate %}
+    </collection-filters>
+  </div>
+</div>
+
+<style>
+  .collection {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  .collection__header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .collection__title {
+    margin: 0 0 1rem;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .collection__description {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .collection__toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+
+  .collection__sort {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .collection__sort-label {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .collection__sort-select {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background: var(--color-background);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.05 3.125 6 7.075 9.95 3.125 10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+  }
+
+  .collection__sort-select:hover {
+    border-color: var(--color-accent);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .collection__toolbar {
+      justify-content: center;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  class CollectionSort extends HTMLElement {
+    constructor() {
+      super();
+      this.sortSelect = this.querySelector('#SortBy');
+      
+      if (this.sortSelect) {
+        this.sortSelect.addEventListener('change', this.handleSortChange.bind(this));
+      }
+    }
+
+    handleSortChange() {
+      const url = new URL(window.location);
+      url.searchParams.set('sort_by', this.sortSelect.value);
+      window.location.href = url.toString();
+    }
+  }
+
+  customElements.define('collection-sort', CollectionSort);
+</script>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 8,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        }
+      ],
+      "default": "adapt",
+      "label": "Image ratio"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show secondary image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": true,
+      "label": "Enable quick add"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_view",
+      "default": false,
+      "label": "Enable quick view"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ]
+}
+{% endschema %} 
