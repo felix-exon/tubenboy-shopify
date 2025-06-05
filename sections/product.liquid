@@ -232,7 +232,7 @@
           </div>
 
           <div class="product__buttons">
-            <button type="submit" class="product__add-to-cart">
+            <button type="submit" class="product__add-to-cart" id="add-to-cart-btn">
               {{ 'products.add_to_cart' | t }}
             </button>
             {% if section.settings.show_payment_button %}
@@ -444,6 +444,11 @@
 
   .product__add-to-cart:hover {
     opacity: 0.9;
+  }
+
+  .product__add-to-cart:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   .product__shipping-info {
@@ -890,4 +895,112 @@
 
     updateGalleryForVariant();
   }
+
 {% endjavascript %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Simple AJAX Add to Cart
+  const form = document.querySelector('form[action*="/cart/add"]');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      
+      btn.disabled = true;
+      btn.textContent = 'Wird hinzugefügt...';
+      
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(form)
+      })
+      .then(response => response.json())
+      .then(data => {
+        btn.textContent = 'Hinzugefügt!';
+        btn.style.backgroundColor = '#28a745';
+        btn.style.color = 'white';
+        
+        // Update cart count in header
+        updateCartCount();
+        
+        // Dispatch custom event for other components
+        document.dispatchEvent(new CustomEvent('cart:updated', {
+          detail: { item: data }
+        }));
+        
+        setTimeout(function() {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+        }, 2000);
+      })
+      .catch(error => {
+        btn.textContent = 'Fehler';
+        btn.style.backgroundColor = '#dc3545';
+        btn.style.color = 'white';
+        
+        setTimeout(function() {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+        }, 2000);
+      });
+    });
+  }
+
+  // Function to update cart count in header
+  function updateCartCount() {
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        // Common selectors for cart count elements
+        const cartCountSelectors = [
+          '.cart-count',
+          '[data-cart-count]',
+          '.header__cart-count',
+          '.header__nav-action-count',
+          '.cart__count',
+          '.cart-drawer__count',
+          '#cart-count',
+          '.js-cart-count'
+        ];
+        
+        cartCountSelectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(element => {
+            element.textContent = cart.item_count;
+            element.style.display = cart.item_count > 0 ? 'flex' : 'none';
+            
+            // Add/remove multi-digit class for styling
+            if (cart.item_count > 9) {
+              element.classList.add('multi-digit');
+            } else {
+              element.classList.remove('multi-digit');
+            }
+          });
+        });
+        
+        // Show/hide cart count based on item count
+        cartCountSelectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(element => {
+            if (cart.item_count > 0) {
+              element.style.display = 'flex';
+            } else {
+              element.style.display = 'none';
+            }
+          });
+        });
+        
+        console.log('Cart count updated to:', cart.item_count);
+      })
+      .catch(error => {
+        console.log('Error updating cart count:', error);
+      });
+  }
+});
+</script>
