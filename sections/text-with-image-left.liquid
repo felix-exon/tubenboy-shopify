@@ -48,6 +48,17 @@
       "label": "Image"
     },
     {
+      "type": "range",
+      "id": "image_max_height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Image Max Height",
+      "default": 400,
+      "info": "Maximum height for the image. Image will maintain aspect ratio."
+    },
+    {
       "type": "richtext",
       "id": "text",
       "label": "Text Content",
@@ -231,9 +242,11 @@
 .text-with-image-image img {
   width: 100%;
   height: auto;
+  max-height: {{ section.settings.image_max_height }}px;
   display: block;
   position: relative;
   z-index: 2;
+  object-fit: cover;
 }
 
 .text-with-image-content {
