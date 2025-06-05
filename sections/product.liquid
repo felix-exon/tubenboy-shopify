@@ -5,14 +5,55 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
+<script type="application/json" id="product-data">
+{
+  "id": {{ product.id | json }},
+  "variants": {{ product.variants | json }},
+  "options": {{ product.options | json }},
+  "selected_variant_id": {{ product.selected_or_first_available_variant.id | json }}
+}
+</script>
+
 <div class="product">
   <div class="product__grid">
     <div class="product__gallery">
       <div class="product__gallery-main">
         {% for image in product.images %}
+          {% assign variant_ids = '' %}
+          {% assign image_alt_lower = image.alt | downcase | strip %}
+          {% for variant in product.variants %}
+            {% assign variant_color = '' %}
+            {% for option in variant.options %}
+              {% assign option_name = product.options[forloop.index0].name %}
+              {% if option_name == 'Color' or option_name == 'Colour' or option_name == 'Farbe' %}
+                {% assign variant_color = option | downcase | strip %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+            {% comment %} Check if image is associated with this variant {% endcomment %}
+            {% assign is_associated = false %}
+            {% if variant.featured_image.id == image.id %}
+              {% assign is_associated = true %}
+            {% elsif image_alt_lower contains variant_color and variant_color != '' %}
+              {% assign is_associated = true %}
+            {% elsif image.alt == blank and forloop.first %}
+              {% comment %} If no alt text and it's the first image, associate with first variant {% endcomment %}
+              {% assign is_associated = true %}
+            {% endif %}
+            
+            {% if is_associated %}
+              {% if variant_ids == '' %}
+                {% assign variant_ids = variant.id %}
+              {% else %}
+                {% assign variant_ids = variant_ids | append: ',' | append: variant.id %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
           <div 
             class="product__image-wrapper{% if forloop.first %} active{% endif %}" 
             data-image-index="{{ forloop.index0 }}"
+            data-variant-ids="{{ variant_ids }}"
+            data-image-alt="{{ image.alt | escape }}"
           >
             {% render 'image', class: 'product__image', image: image %}
           </div>
@@ -22,9 +63,41 @@
       {% if product.images.size > 1 %}
         <div class="product__gallery-thumbnails">
           {% for image in product.images %}
+            {% assign variant_ids = '' %}
+            {% assign image_alt_lower = image.alt | downcase | strip %}
+            {% for variant in product.variants %}
+              {% assign variant_color = '' %}
+              {% for option in variant.options %}
+                {% assign option_name = product.options[forloop.index0].name %}
+                {% if option_name == 'Color' or option_name == 'Colour' or option_name == 'Farbe' %}
+                  {% assign variant_color = option | downcase | strip %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+              {% comment %} Check if image is associated with this variant {% endcomment %}
+              {% assign is_associated = false %}
+              {% if variant.featured_image.id == image.id %}
+                {% assign is_associated = true %}
+              {% elsif image_alt_lower contains variant_color and variant_color != '' %}
+                {% assign is_associated = true %}
+              {% elsif image.alt == blank and forloop.first %}
+                {% comment %} If no alt text and it's the first image, associate with first variant {% endcomment %}
+                {% assign is_associated = true %}
+              {% endif %}
+              
+              {% if is_associated %}
+                {% if variant_ids == '' %}
+                  {% assign variant_ids = variant.id %}
+                {% else %}
+                  {% assign variant_ids = variant_ids | append: ',' | append: variant.id %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
             <button
               class="product__thumbnail{% if forloop.first %} active{% endif %}"
               data-image-index="{{ forloop.index0 }}"
+              data-variant-ids="{{ variant_ids }}"
+              data-image-alt="{{ image.alt | escape }}"
               aria-label="View image {{ forloop.index }} of {{ product.images.size }}"
             >
               {% render 'image', class: 'product__thumbnail-image', image: image %}
@@ -618,28 +691,38 @@
 {% endschema %}
 
 {% javascript %}
-  document.addEventListener('DOMContentLoaded', function() {
-    const quantityInput = document.querySelector('.product__quantity-input');
-    const decreaseButton = document.querySelector('[data-action="decrease"]');
-    const increaseButton = document.querySelector('[data-action="increase"]');
+  const quantityInput = document.querySelector('.product__quantity-input');
+  const decreaseButton = document.querySelector('[data-action="decrease"]');
+  const increaseButton = document.querySelector('[data-action="increase"]');
 
-    if (quantityInput && decreaseButton && increaseButton) {
-      decreaseButton.addEventListener('click', () => {
-        const currentValue = parseInt(quantityInput.value);
-        if (currentValue > 1) {
-          quantityInput.value = currentValue - 1;
-        }
-      });
+  if (quantityInput && decreaseButton && increaseButton) {
+    decreaseButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      const currentValue = parseInt(quantityInput.value) || 1;
+      if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
 
-      increaseButton.addEventListener('click', () => {
-        const currentValue = parseInt(quantityInput.value);
-        quantityInput.value = currentValue + 1;
-      });
+    increaseButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      const currentValue = parseInt(quantityInput.value) || 1;
+      quantityInput.value = currentValue + 1;
+    });
+  }
+
+  // Initialize product data from script tag
+  const productScript = document.getElementById('product-data');
+  if (productScript) {
+    try {
+      window.productData = JSON.parse(productScript.textContent);
+    } catch(e) {
+      console.error('Failed to parse product data:', e);
     }
+  }
 
-    const gallery = document.querySelector('.product__gallery');
-    if (!gallery) return;
-
+  const gallery = document.querySelector('.product__gallery');
+  if (gallery) {
     const mainImages = gallery.querySelectorAll('.product__image-wrapper');
     const thumbnails = gallery.querySelectorAll('.product__thumbnail');
     const prevButton = gallery.querySelector('.product__gallery-nav--prev');
@@ -656,7 +739,6 @@
         currentIndex = index;
       }
 
-      // Update navigation buttons
       if (prevButton) {
         prevButton.disabled = index === 0;
       }
@@ -665,14 +747,12 @@
       }
     }
 
-    // Handle thumbnail clicks
     thumbnails.forEach((thumbnail, index) => {
       thumbnail.addEventListener('click', () => {
         showImage(index);
       });
     });
 
-    // Handle navigation buttons
     if (prevButton) {
       prevButton.addEventListener('click', () => {
         if (currentIndex > 0) {
@@ -689,7 +769,125 @@
       });
     }
 
-    // Initialize gallery
-    showImage(0);
-  });
+    function updateGalleryForVariant() {
+      if (!window.productData) return;
+
+      const variantIdInput = document.querySelector('input[name="id"]');
+      const currentVariantId = variantIdInput ? parseInt(variantIdInput.value) : window.productData.selected_variant_id;
+      
+      const matchingVariant = window.productData.variants.find(v => v.id === currentVariantId);
+      
+      if (!matchingVariant) return;
+
+      console.log('Current variant:', matchingVariant.title, 'ID:', matchingVariant.id);
+
+      mainImages.forEach(image => {
+        image.classList.remove('active');
+        image.style.display = 'none';
+      });
+      thumbnails.forEach(thumb => {
+        thumb.classList.remove('active');
+        thumb.style.display = 'none';
+      });
+
+      let visibleImages = [];
+      mainImages.forEach((image, index) => {
+        const variantIdsStr = image.dataset.variantIds || '';
+        const variantIds = variantIdsStr ? variantIdsStr.split(',').map(id => parseInt(id)) : [];
+        
+        if (variantIds.includes(matchingVariant.id)) {
+          image.style.display = '';
+          thumbnails[index].style.display = '';
+          visibleImages.push(index);
+          console.log('Showing image:', index);
+        }
+      });
+
+      if (visibleImages.length === 0) {
+        mainImages.forEach((image, index) => {
+          const variantIdsStr = image.dataset.variantIds || '';
+          if (variantIdsStr === '') {
+            image.style.display = '';
+            thumbnails[index].style.display = '';
+            visibleImages.push(index);
+          }
+        });
+      }
+
+      console.log('Total images visible:', visibleImages.length);
+      if (visibleImages.length > 0) {
+        showImage(visibleImages[0]);
+      }
+    }
+
+    const variantSelects = document.querySelectorAll('select[name^="options["]');
+    const colorRadios = document.querySelectorAll('.product__color-radio');
+
+    function updateVariantId() {
+      console.log('updateVariantId called');
+      
+      const selectedOptions = {};
+      variantSelects.forEach(select => {
+        if (select.name && select.name.includes('options[')) {
+          const optionName = select.name.match(/options\[(.*?)\]/)[1];
+          selectedOptions[optionName] = select.value;
+        }
+      });
+      colorRadios.forEach(radio => {
+        if (radio.checked && radio.name && radio.name.includes('options[')) {
+          const optionName = radio.name.match(/options\[(.*?)\]/)[1];
+          selectedOptions[optionName] = radio.value;
+        }
+      });
+
+      console.log('Selected options:', selectedOptions);
+
+      if (window.productData) {
+        console.log('Available variants:', window.productData.variants);
+        console.log('Product options:', window.productData.options);
+
+        const matchingVariant = window.productData.variants.find(variant => {
+          const matches = Object.entries(selectedOptions).every(([optionName, optionValue]) => {
+            const optionIndex = window.productData.options.indexOf(optionName);
+            console.log('Looking for option:', optionName, 'found at index:', optionIndex);
+            if (optionIndex >= 0) {
+              const variantOption = variant.options[optionIndex];
+              const isMatch = variantOption === optionValue;
+              console.log('Variant', variant.id, ':', variantOption, '===', optionValue, '=', isMatch);
+              return isMatch;
+            }
+            return false;
+          });
+          console.log('Variant', variant.id, variant.title, 'overall match:', matches);
+          return matches;
+        });
+
+        if (matchingVariant) {
+          const variantIdInput = document.querySelector('input[name="id"]');
+          if (variantIdInput) {
+            variantIdInput.value = matchingVariant.id;
+            console.log('Updated variant ID to:', matchingVariant.id, matchingVariant.title);
+          }
+        } else {
+          console.log('No matching variant found for options:', selectedOptions);
+        }
+      }
+    }
+
+    variantSelects.forEach(input => {
+      input.addEventListener('change', function() {
+        updateVariantId();
+        setTimeout(updateGalleryForVariant, 100);
+      });
+    });
+
+    colorRadios.forEach(input => {
+      input.addEventListener('change', function() {
+        updateVariantId();
+        setTimeout(updateGalleryForVariant, 100);
+      });
+    });
+
+    updateGalleryForVariant();
+  }
 {% endjavascript %}
