@@ -57,6 +57,11 @@
       "default": "Shop Now"
     },
     {
+      "type": "collection",
+      "id": "product_1_collection",
+      "label": "Button Link Collection (Optional)"
+    },
+    {
       "type": "color",
       "id": "product_1_button_bg",
       "label": "Button Background Color",
@@ -94,6 +99,11 @@
       "id": "product_2_button_text",
       "label": "Button Text",
       "default": "Shop Now"
+    },
+    {
+      "type": "collection",
+      "id": "product_2_collection",
+      "label": "Button Link Collection (Optional)"
     },
     {
       "type": "color",
@@ -137,7 +147,7 @@
         <div class="product-showcase__content">
           <h2 class="product-showcase__title">{{ section.settings.product_1_title }}</h2>
           <div class="product-showcase__description">{{ section.settings.product_1_description }}</div>
-          <a href="{{ product_1.url }}" class="product-showcase__button" style="background-color: {{ section.settings.product_1_button_bg }}; color: {{ section.settings.product_1_button_text_color }};">
+          <a href="{% if section.settings.product_1_collection != blank %}{{ collections[section.settings.product_1_collection].url }}{% else %}{{ product_1.url }}{% endif %}" class="product-showcase__button" style="background-color: {{ section.settings.product_1_button_bg }}; color: {{ section.settings.product_1_button_text_color }};">
             {{ section.settings.product_1_button_text }}
           </a>
         </div>
@@ -158,7 +168,7 @@
         <div class="product-showcase__content">
           <h2 class="product-showcase__title">{{ section.settings.product_2_title }}</h2>
           <div class="product-showcase__description">{{ section.settings.product_2_description }}</div>
-          <a href="{{ product_2.url }}" class="product-showcase__button" style="background-color: {{ section.settings.product_2_button_bg }}; color: {{ section.settings.product_2_button_text_color }};">
+          <a href="{% if section.settings.product_2_collection != blank %}{{ collections[section.settings.product_2_collection].url }}{% else %}{{ product_2.url }}{% endif %}" class="product-showcase__button" style="background-color: {{ section.settings.product_2_button_bg }}; color: {{ section.settings.product_2_button_text_color }};">
             {{ section.settings.product_2_button_text }}
           </a>
         </div>
