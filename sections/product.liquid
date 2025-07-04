@@ -732,7 +732,15 @@
     const thumbnails = gallery.querySelectorAll('.product__thumbnail');
     const prevButton = gallery.querySelector('.product__gallery-nav--prev');
     const nextButton = gallery.querySelector('.product__gallery-nav--next');
+    const thumbnailsContainer = gallery.querySelector('.product__gallery-thumbnails');
     let currentIndex = 0;
+
+    // Hide navigation and thumbnails if there's only one image
+    if (mainImages.length <= 1) {
+      if (prevButton) prevButton.style.display = 'none';
+      if (nextButton) nextButton.style.display = 'none';
+      if (thumbnailsContainer) thumbnailsContainer.style.display = 'none';
+    }
 
     function showImage(index) {
       mainImages.forEach(image => image.classList.remove('active'));
@@ -740,7 +748,9 @@
       
       if (mainImages[index]) {
         mainImages[index].classList.add('active');
-        thumbnails[index].classList.add('active');
+        if (thumbnails[index]) {
+          thumbnails[index].classList.add('active');
+        }
         currentIndex = index;
       }
 
@@ -784,8 +794,7 @@
       
       if (!matchingVariant) return;
 
-      console.log('Current variant:', matchingVariant.title, 'ID:', matchingVariant.id);
-
+      // First, hide all images
       mainImages.forEach(image => {
         image.classList.remove('active');
         image.style.display = 'none';
@@ -795,6 +804,7 @@
         thumb.style.display = 'none';
       });
 
+      // Find images associated with the current variant
       let visibleImages = [];
       mainImages.forEach((image, index) => {
         const variantIdsStr = image.dataset.variantIds || '';
@@ -802,24 +812,50 @@
         
         if (variantIds.includes(matchingVariant.id)) {
           image.style.display = '';
-          thumbnails[index].style.display = '';
+          if (thumbnails[index]) {
+            thumbnails[index].style.display = '';
+          }
           visibleImages.push(index);
-          console.log('Showing image:', index);
         }
       });
 
+      // If no variant-specific images found, show all images without variant association
       if (visibleImages.length === 0) {
         mainImages.forEach((image, index) => {
           const variantIdsStr = image.dataset.variantIds || '';
           if (variantIdsStr === '') {
             image.style.display = '';
-            thumbnails[index].style.display = '';
+            if (thumbnails[index]) {
+              thumbnails[index].style.display = '';
+            }
             visibleImages.push(index);
           }
         });
       }
 
-      console.log('Total images visible:', visibleImages.length);
+      // If still no images found, show all images as fallback
+      if (visibleImages.length === 0) {
+        mainImages.forEach((image, index) => {
+          image.style.display = '';
+          if (thumbnails[index]) {
+            thumbnails[index].style.display = '';
+          }
+          visibleImages.push(index);
+        });
+      }
+
+      // Update navigation visibility based on visible images
+      if (visibleImages.length <= 1) {
+        if (prevButton) prevButton.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
+        if (thumbnailsContainer) thumbnailsContainer.style.display = 'none';
+      } else {
+        if (prevButton) prevButton.style.display = '';
+        if (nextButton) nextButton.style.display = '';
+        if (thumbnailsContainer) thumbnailsContainer.style.display = '';
+      }
+
+      // Show the first visible image
       if (visibleImages.length > 0) {
         showImage(visibleImages[0]);
       }
@@ -829,8 +865,6 @@
     const colorRadios = document.querySelectorAll('.product__color-radio');
 
     function updateVariantId() {
-      console.log('updateVariantId called');
-      
       const selectedOptions = {};
       variantSelects.forEach(select => {
         if (select.name && select.name.includes('options[')) {
@@ -845,36 +879,23 @@
         }
       });
 
-      console.log('Selected options:', selectedOptions);
-
       if (window.productData) {
-        console.log('Available variants:', window.productData.variants);
-        console.log('Product options:', window.productData.options);
-
         const matchingVariant = window.productData.variants.find(variant => {
-          const matches = Object.entries(selectedOptions).every(([optionName, optionValue]) => {
+          return Object.entries(selectedOptions).every(([optionName, optionValue]) => {
             const optionIndex = window.productData.options.indexOf(optionName);
-            console.log('Looking for option:', optionName, 'found at index:', optionIndex);
             if (optionIndex >= 0) {
               const variantOption = variant.options[optionIndex];
-              const isMatch = variantOption === optionValue;
-              console.log('Variant', variant.id, ':', variantOption, '===', optionValue, '=', isMatch);
-              return isMatch;
+              return variantOption === optionValue;
             }
             return false;
           });
-          console.log('Variant', variant.id, variant.title, 'overall match:', matches);
-          return matches;
         });
 
         if (matchingVariant) {
           const variantIdInput = document.querySelector('input[name="id"]');
           if (variantIdInput) {
             variantIdInput.value = matchingVariant.id;
-            console.log('Updated variant ID to:', matchingVariant.id, matchingVariant.title);
           }
-        } else {
-          console.log('No matching variant found for options:', selectedOptions);
         }
       }
     }
@@ -893,9 +914,9 @@
       });
     });
 
+    // Initial gallery update
     updateGalleryForVariant();
   }
-
 {% endjavascript %}
 
 <script>

@@ -200,7 +200,7 @@
       </div>
 
       <div class="contact-form-wrapper">
-        {% form 'contact', id: 'contact_form' %}
+        {% form 'contact', id: 'contact_form', data-shopify-captcha: true %}
           {% if form.posted_successfully? %}
             <div class="form-success">
               <p>{{ 'contact.form.success' | t }}</p>
@@ -236,6 +236,10 @@
           <div class="form-group">
             <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
             <textarea id="ContactFormMessage" name="contact[body]" rows="5" required></textarea>
+          </div>
+
+          <div class="captcha-disclaimer">
+            {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
           </div>
 
           <button type="submit" class="contact-form-submit">
@@ -542,5 +546,17 @@
 
   .form-errors li {
     margin-bottom: 0.25rem;
+  }
+
+  .captcha-disclaimer {
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--color-foreground-subdued);
+    line-height: 1.5;
+  }
+
+  .captcha-disclaimer a {
+    color: var(--color-accent);
+    text-decoration: underline;
   }
 </style> 
